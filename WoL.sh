@@ -65,7 +65,12 @@ else
     
     # Send magic packet
     printf "Sending magic packet..." 
-    echo -e $magicpacket | nc -w1 -u -b $targetip $targetport
+    #echo -e $magicpacket | nc -w1 -u -b $targetip $targetport
+    if [ -z $targetport ];then
+        echo -e $magicpacket | socat - UDP-DATAGRAM:$targetip:9,broadcast
+    else
+        echo -e $magicpacket | socat - UDP-DATAGRAM:$targetip:$targetport,broadcast
+    fi
     printf " Done!"
     
 fi
